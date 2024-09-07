@@ -22,18 +22,6 @@ SubAlgoritmo InicializarTablero(tablero)
     FinPara
 FinSubAlgoritmo
 
-SubAlgoritmo buscarValorEnTablero(tablero, fila, colum, dato)
-	Para i = 0 Hasta 4-1 Con Paso 1
-        Para j = 0 Hasta 5-1 Con Paso 1
-			Si tablero[i,j] = dato Entonces
-				fila = i;
-				colum = j;
-				i = 3
-			FinSi
-        FinPara
-    FinPara
-FinSubAlgoritmo
-
 SubAlgoritmo MostrarTablero(tablero)
     Para i = 0 Hasta 4-1 Con Paso 1
         Para j = 0 Hasta 5-1 Con Paso 1
@@ -55,66 +43,6 @@ SubAlgoritmo MostrarMenuJugar
     Escribir "3. Terminar"
 FinSubAlgoritmo
 
-SubAlgoritmo ubicarJugadorEnTablero(tablero, fila, colum)
-	InicializarTablero(tablero)
-	tablero[fila, colum] = "J"
-FinSubAlgoritmo
-
-SubAlgoritmo MoverDetective(cantTurnos, tablero)
-	Definir opcionCafe, fila, colum, opcionMovimiento Como Entero
-
-	Si cantTurnos == 3 Entonces
-		Escribir "Elija un cafe para empezar:"
-		Escribir "1. Cafe en la posicion 7 del tablero"
-		Escribir "2. Cafe en la posicion 14 del tablero"
-		Leer opcionCafe
-		Si opcionCafe = 1
-			fila = 1
-			colum = 1
-			ubicarJugadorEnTablero(tablero, fila, colum)
-		SiNo
-			fila = 2
-			colum = 3
-			ubicarJugadorEnTablero(tablero, 2, 3)
-		FinSi
-		MostrarTablero(tablero)
-	FinSi
-	
-	Si cantTurnos == 3 Entonces
-		Repetir
-			Escribir "1. Arriba"
-			Escribir "2. Abajo"
-			Escribir "3. Derecha"
-			Escribir "4. Izquierda"
-			Escribir "5. Volver"
-			
-			Leer opcionMovimiento
-			
-			Segun opcionMovimiento Hacer
-				1: filaAnt = fila
-					fila = fila - 1
-					ubicarJugadorEnTablero(tablero, fila, colum)
-					MostrarTablero(tablero)
-					cantTurnos = cantTurnos - 1
-				2: fila = fila + 1
-					ubicarJugadorEnTablero(tablero, fila, colum)
-					MostrarTablero(tablero)
-					cantTurnos = cantTurnos - 1
-				3: colum = colum + 1
-					ubicarJugadorEnTablero(tablero, fila, colum)
-					MostrarTablero(tablero)
-					cantTurnos = cantTurnos - 1
-				4: colum = colum - 1
-					ubicarJugadorEnTablero(tablero, fila, colum)
-					MostrarTablero(tablero)
-					cantTurnos = cantTurnos - 1
-			FinSegun
-			
-		Hasta Que cantTurnos == 0
-	FinSi
-	
-FinSubAlgoritmo
-
 Algoritmo CerealKiller
     Definir CASILLA_VACIA, CASILLA_CASA, CASILLA_PARQUE, CASILLA_CAFE, CASILLA_CEREAL, CASILLA_TESTIGO, CASILLA_DETECTIVE Como Caracter
     CASILLA_VACIA = " "
@@ -132,8 +60,7 @@ Algoritmo CerealKiller
     Definir tablero Como Caracter
     Dimension tablero[FILAS, COLUMNAS]
     
-    Definir opcionPrincipal, opcionMenuJugar, cantTurnos Como Entero
-	cantTurnos = 3
+    Definir opcionPrincipal, opcionJugar Como Entero
     
     Repetir
         MostrarMenu()
@@ -147,25 +74,23 @@ Algoritmo CerealKiller
                 Repetir
                     MostrarMenuJugar()
                     Escribir "Seleccione una opción: "
-                    Leer opcionMenuJugar
-                    Segun opcionMenuJugar
-                        1: Escribir "Opción Mover seleccionada."
-							Escribir "Turnos restantes: ", cantTurnos
-							MoverDetective(cantTurnos, tablero) 
+                    Leer opcionJugar
+                    Segun opcionJugar
+                        1: // Lógica para Mover
+                            Escribir "Opción Mover seleccionada."
                         2: // Lógica para Arrestar
                             Escribir "Opción Arrestar seleccionada."
                         3: // Terminar juego
-                            Escribir "Terminando partida..."
-							
+                            Escribir "Terminando juego..."
                         De Otro Modo:
                             Escribir "Opción inválida, intente de nuevo."
                     FinSegun
-                Hasta Que opcionMenuJugar == 3
+                Hasta Que opcionJugar = 3
             2:
                 Escribir "Reglas del juego:"
 				Escribir "tiki taka"
             3:
-                Escribir "Saliendo del juego..."
+                Escribir "Saliendo del programa..."
             De Otro Modo:
                 Escribir "Opción inválida, intente de nuevo."
         FinSegun
