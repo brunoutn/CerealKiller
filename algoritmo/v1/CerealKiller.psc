@@ -13,46 +13,62 @@ SubAlgoritmo Jugar
 	Definir tablero Como Caracter
 	Dimension tablero[FILAS, COLUMNAS]
 	
-	// Tablero para guardar la posiciÃ³n del asesino
+	// Tablero para guardar la posición del asesino
 	Definir tablero_asesino Como Caracter
 	Dimension tablero_asesino[FILAS, COLUMNAS]
+	Definir casillaAsesino Como Entero
+	Dimension posAsesino[2]
+	
+	casillaAsesino = PosicionInicialAsesino
+	POStoFC(casillaAsesino, posAsesino[0], posAsesino[1])
+	
+	//detective
+	Definir posDetective Como Entero
+	Dimension posDetective[2]
+	
+	Dimension posCasa[2]
 	
 	Definir cantTurnos, empezoJuego Como Entero
 	cantTurnos = 3
 	empezoJuego = 1
-	Definir fila, colum, posDetective Como Entero
+	Definir fila, colum Como Entero
+	Definir casillaAnterior Como Caracter
 	
 	Repetir
         MostrarMenu()
-        Escribir "Seleccione una opciÃ³n: "
+        Escribir "Seleccione una opción: "
 		opPrinc <- validarn
         Segun opPrinc
             1:
+				Limpiar Pantalla
                 InicializarTablero(tablero)
                 MostrarTablero(tablero)
 				
                 Repetir
 					Si empezoJuego = 1
-						ElegirCafe(tablero, fila, colum)
+						ElegirCafe(tablero, fila, colum, casillaAnterior)
 					FinSi
 					
 					empezoJuego = 0
                     MostrarMenuJugar()
-                    Escribir "Seleccione una opciÃ³n: "
+                    Escribir "Seleccione una opción: "
                     opJugar <- validarn
 					
                     Segun opJugar
                         1:
-							Escribir "OpciÃ³n Mover seleccionada."
-							Escribir "Turnos restantes: ", cantTurnos
-							MoverDetective(cantTurnos, tablero, fila, colum, empezoJuego)
+							Limpiar Pantalla
+							MoverDetective(cantTurnos, tablero, fila, colum, empezoJuego, casillaAnterior)
                         2: 	
+							Limpiar Pantalla
+							MostrarTablero(tablero)
+							posDetective[0] = fila
+							posDetective[1] = colum
+							
 							Arrestar(posAsesino, posDetective, intentosRestantes)
-                            Escribir "OpciÃ³n Arrestar seleccionada."
                         3: // Terminar juego
                             Escribir "Terminando partida..."
                         De Otro Modo:
-                            Escribir "OpciÃ³n invÃ¡lida, intente de nuevo."
+                            Escribir "Opción inválida, intente de nuevo."
                     FinSegun
 					
                 Hasta Que opJugar == 3
@@ -62,7 +78,8 @@ SubAlgoritmo Jugar
             3:
                 Escribir "Saliendo del juego..."
             De Otro Modo:
-                Escribir "OpciÃ³n invÃ¡lida, intente de nuevo."
+				Limpiar Pantalla
+                Escribir "Opción inválida, intente de nuevo."
         FinSegun
     Hasta Que opPrinc = 3
 FinSubAlgoritmo
@@ -101,7 +118,7 @@ SubAlgoritmo MostrarMenuJugar
     Escribir "3. Terminar"
 FinSubAlgoritmo
 
-// FunciÃ³n para dar un numero de casilla segun fila y columna
+// Función para dar un numero de casilla segun fila y columna
 Funcion posicion <- FCtoPOS ( fila, columna )
 	posicion = fila * 5 + columna + 1
 Fin Funcion
@@ -117,8 +134,13 @@ FinSubAlgoritmo
 ///############### ACA EMPIEZAN LAS FUNCIONES DEL DETECTIVE ###################
 ///############################################################################
 
-SubAlgoritmo ElegirCafe(tablero por referencia, fila Por Referencia, colum Por Referencia)
+///############################################################################
+///####################### ELECCION DE CAFE INICIAL ###########################
+///############################################################################
+
+SubAlgoritmo ElegirCafe(tablero por referencia, fila Por Referencia, colum Por Referencia, casillaAnterior Por Referencia)
 	Definir opcionMovimiento Como Caracter
+	casillaAnterior <- "K"
 	
 	Repetir
 		Escribir "Elija un cafe para empezar:"
@@ -149,10 +171,11 @@ FinSubAlgoritmo
 ///########################### MOVER DETECTIVE ################################
 ///############################################################################
 
-SubAlgoritmo MoverDetective(cantTurnos, tablero, fila por referencia, colum por referencia, empezoJuego)
-	Definir opcionMovimiento, casillaAnterior Como Caracter
-	casillaAnterior <- "N"
+SubAlgoritmo MoverDetective(cantTurnos, tablero Por Referencia, fila por referencia, colum por referencia, empezoJuego, casillaAnterior Por Referencia)
+	Definir opcionMovimiento Como Caracter
 	
+	ubicarJugadorEnTablero(tablero, fila, colum, casillaAnterior)
+	MostrarTablero(tablero)
 	Si cantTurnos <= 3 Entonces
 		Repetir
 			Escribir "W. Arriba"
@@ -160,16 +183,14 @@ SubAlgoritmo MoverDetective(cantTurnos, tablero, fila por referencia, colum por 
 			Escribir "D. Derecha"
 			Escribir "A. Izquierda"
 			Escribir "X. Finalizar turno"
-			
+			Escribir "Turnos restantes: ", cantTurnos
 			Leer opcionMovimiento
-			
 			Segun opcionMovimiento Hacer
 				'w' o 'W': 
 					Si fila - 1 >= 0 Entonces
 						fila = fila - 1
 						ubicarJugadorEnTablero(tablero, fila, colum, casillaAnterior)
 						Limpiar Pantalla
-						MostrarTablero(tablero)
 						cantTurnos = cantTurnos - 1
 					FinSi
 				's' o 'S': 
@@ -177,7 +198,6 @@ SubAlgoritmo MoverDetective(cantTurnos, tablero, fila por referencia, colum por 
 						fila = fila + 1
 						ubicarJugadorEnTablero(tablero, fila, colum, casillaAnterior)
 						Limpiar Pantalla
-						MostrarTablero(tablero)
 						cantTurnos = cantTurnos - 1
 					FinSi
 				'd' o 'D':
@@ -185,7 +205,6 @@ SubAlgoritmo MoverDetective(cantTurnos, tablero, fila por referencia, colum por 
 						colum = colum + 1
 						ubicarJugadorEnTablero(tablero, fila, colum, casillaAnterior)
 						Limpiar Pantalla
-						MostrarTablero(tablero)
 						cantTurnos = cantTurnos - 1
 					FinSi
 				'a' o 'A': 
@@ -193,7 +212,6 @@ SubAlgoritmo MoverDetective(cantTurnos, tablero, fila por referencia, colum por 
 						colum = colum - 1
 						ubicarJugadorEnTablero(tablero, fila, colum, casillaAnterior)
 						Limpiar Pantalla
-						MostrarTablero(tablero)
 						cantTurnos = cantTurnos - 1
 					FinSi
 				'x' o 'X':
@@ -202,16 +220,15 @@ SubAlgoritmo MoverDetective(cantTurnos, tablero, fila por referencia, colum por 
 				De Otro Modo:
 					Escribir "Input incorrecto, vuelva a ingresar"
 			FinSegun
+			MostrarTablero(tablero)
 		Hasta Que cantTurnos == 0
-		GuardarCasillaAnterior(casillaAnterior, tablero, fila, colum)
 	FinSi
-	
 FinSubAlgoritmo
 
 
 SubAlgoritmo ubicarJugadorEnTablero(tablero, fila, colum, casillaAnterior Por Referencia)
 	GuardarCasillaAnterior(casillaAnterior, tablero, fila, colum)
-    // Colocar al jugador "D" en la nueva posiciÃ³n
+    // Colocar al jugador "D" en la nueva posición
     tablero[fila, colum] = "D"
 FinSubAlgoritmo
 
@@ -220,18 +237,16 @@ SubAlgoritmo GuardarCasillaAnterior(casillaAnterior Por Referencia, tablero, fil
     Para i = 0 Hasta 4-1 Con Paso 1
         Para j = 0 Hasta 5-1 Con Paso 1
             Si tablero[i, j] = "D" Entonces
-                tablero[i, j] = casillaAnterior  // Restauramos el valor que habÃ­a antes de colocar el jugador
+                tablero[i, j] = casillaAnterior  // Restauramos el valor que había antes de colocar el jugador
             FinSi
         FinPara
     FinPara
-	
-    // Guardar lo que habÃ­a en la nueva posiciÃ³n antes de colocar al jugador
+    // Guardar lo que había en la nueva posición antes de colocar al jugador
     casillaAnterior = tablero[fila, colum]
 FinSubAlgoritmo
 
-
 ///############################################################################
-///############### ACA EMPIEZA LA FUNCION DE ARRESTAR ASESINO #################
+///################## ACA EMPIEZA LA FUNCION DE ARRESTAR ######################
 ///############################################################################
 
 SubAlgoritmo Arrestar(posAsesino, posDetective, intentosRestantes Por Referencia)
@@ -244,41 +259,45 @@ SubAlgoritmo Arrestar(posAsesino, posDetective, intentosRestantes Por Referencia
         Escribir "D. Derecha"
         Escribir "Q. Misma Casilla"
         Escribir "X. Salir"
+		
+		///ESCRIBIR PARA PRUEBAS
+		Escribir "Posicion asesino: ", FCtoPOS(posAsesino[0], posAsesino[1])
+		Escribir "Posicion detective: ", FCtoPOS(posDetective[0], posDetective[1])
         Leer op
 		
-		// Intento de arresto basado en la selecciÃ³n del jugador
+		// Intento de arresto basado en la selección del jugador
 		Segun op Hacer
 			'w' o 'W': // Arriba
 				Si posDetective[0] - 1 = posAsesino[0] y posDetective[1] = posAsesino[1] Entonces
-					Escribir "Â¡Asesino arrestado! El juego ha terminado." //PLACEHOLDER: ARMAR FUNCIONES CORRECTAMENTE PARA GANAR EL JUEGO
+					Escribir "¡Asesino arrestado! El juego ha terminado." //PLACEHOLDER: ARMAR FUNCIONES CORRECTAMENTE PARA GANAR EL JUEGO
 				SiNo
 					Escribir "Fallaste el arresto."
 				FinSi
 				
 			's' o 'S': // Abajo
 				Si posDetective[0] + 1 = posAsesino[0] y posDetective[1] = posAsesino[1] Entonces
-					Escribir "Â¡Asesino arrestado! El juego ha terminado."//PLACEHOLDER: ARMAR FUNCIONES CORRECTAMENTE PARA GANAR EL JUEGO
+					Escribir "¡Asesino arrestado! El juego ha terminado."//PLACEHOLDER: ARMAR FUNCIONES CORRECTAMENTE PARA GANAR EL JUEGO
 				SiNo
 					Escribir "Fallaste el arresto."
 				FinSi
 				
 			'a' o 'A': // Izquierda
 				Si posDetective[0] = posAsesino[0] y posDetective[1] - 1 = posAsesino[1] Entonces
-					Escribir "Â¡Asesino arrestado! El juego ha terminado."//PLACEHOLDER: ARMAR FUNCIONES CORRECTAMENTE PARA GANAR EL JUEGO
+					Escribir "¡Asesino arrestado! El juego ha terminado."//PLACEHOLDER: ARMAR FUNCIONES CORRECTAMENTE PARA GANAR EL JUEGO
 				SiNo
 					Escribir "Fallaste el arresto."
 				FinSi
 				
 			'd' o 'D': // Derecha
 				Si posDetective[0] = posAsesino[0] y posDetective[1] + 1 = posAsesino[1] Entonces
-					Escribir "Â¡Asesino arrestado! El juego ha terminado."//PLACEHOLDER: ARMAR FUNCIONES CORRECTAMENTE PARA GANAR EL JUEGO
+					Escribir "¡Asesino arrestado! El juego ha terminado."//PLACEHOLDER: ARMAR FUNCIONES CORRECTAMENTE PARA GANAR EL JUEGO
 				SiNo
 					Escribir "Fallaste el arresto."
 				FinSi
 				
 			'q' o 'Q': // Misma casilla
 				Si posDetective[0] = posAsesino[0] y posDetective[1] = posAsesino[1] Entonces
-					Escribir "Â¡Asesino arrestado! El juego ha terminado."//PLACEHOLDER: ARMAR FUNCIONES CORRECTAMENTE PARA GANAR EL JUEGO
+					Escribir "¡Asesino arrestado! El juego ha terminado."//PLACEHOLDER: ARMAR FUNCIONES CORRECTAMENTE PARA GANAR EL JUEGO
 				SiNo
 					Escribir "Fallaste el arresto."
 				FinSi
@@ -295,6 +314,154 @@ FinSubAlgoritmo
 ///FUNCION PARA CALCULAR DISTANCIA ENTRE POSICIONES
 Funcion cantMovimientos <- DistanciaEntre(A, B)
 	cantMovimientos = Abs(A[0] - B[0]) + Abs(A[1] - B[1])
+FinFuncion
+
+///############################################################################
+///############### ACA EMPIEZAN LAS FUNCIONES DEL DETECTIVE ###################
+///############################################################################
+
+
+///############################################################################
+///############# FUNCION DE POSICION PROVISIONAL PARA EL ASESINO ##############
+///############################################################################
+
+// Función para darle posición inicial al asesino
+Funcion inicio_asesino <- PosicionInicialAsesino
+	Definir fila, columna Como Entero
+	inicio_asesino = azar(8) //ARREGLAR ALEATORIO
+	Segun (inicio_asesino)
+		1: 	fila = 0
+			columna = 0
+			
+		2: 	fila = 0
+			columna = 4
+			
+		3: 	fila = 1
+			columna = 2
+			
+		4:  fila = 1
+			columna = 4
+			
+		5:  fila = 2
+			columna = 0
+			
+		6: 	fila = 2
+			columna = 4
+			
+		7:	fila = 3
+			columna = 1
+			
+		8: 	fila = 3
+			columna = 2
+	FinSegun
+	inicio_asesino = FCtoPOS(fila, columna)
+FinFuncion
+
+///############################################################################
+///############### FUNCION PARA EVALUAR DETECTIVE EN CAMINO ###################
+///############################################################################
+
+//Funcion para evaluar que el detective no esté en medio del camino
+Funcion evaluacion <- EvaluarDetectiveEnCamino(posAsesino, posDetective, posCasa)
+    Definir movimientosRestantes Como Entero
+    Definir evaluacion Como Logico
+    movimientosRestantes = 3
+    evaluacion = Falso
+    
+    // Primera fase: Igualar columna y luego fila
+    dimension asesino_temp[2]
+    asesino_temp[0] = posAsesino[0] // Copia de la fila del asesino
+    asesino_temp[1] = posAsesino[1] // Copia de la columna del asesino
+    
+    // Fase 1: Igualar la columna primero
+    Mientras movimientosRestantes > 0 y asesino_temp[1] <> posCasa[1] Hacer
+        Si asesino_temp[1] < posCasa[1] Entonces
+            asesino_temp[1] = asesino_temp[1] + 1 // Mover a la derecha
+        Sino Si asesino_temp[1] > posCasa[1] Entonces
+				asesino_temp[1] = asesino_temp[1] - 1 // Mover a la izquierda
+			FinSi
+		FinSi
+		
+		// Verificar si el asesino se cruza con el detective
+		Si asesino_temp[0] = posDetective[0] y asesino_temp[1] = posDetective[1] Entonces
+			movimientosRestantes = -1 // Fase 1 fallida
+		FinSi
+		
+		movimientosRestantes = movimientosRestantes - 1
+	FinMientras
+	
+	// Verificar si aún tiene movimientos y puede continuar hacia la fila
+	Si movimientosRestantes > 0 Entonces
+		Mientras movimientosRestantes > 0 y asesino_temp[0] <> posCasa[0] Hacer
+			Si asesino_temp[0] < posCasa[0] Entonces
+				asesino_temp[0] = asesino_temp[0] + 1 // Mover hacia abajo
+			Sino Si asesino_temp[0] > posCasa[0] Entonces
+					asesino_temp[0] = asesino_temp[0] - 1 // Mover hacia arriba
+				FinSi
+			FinSi
+			
+			movimientosRestantes = movimientosRestantes - 1
+			
+			// Verificar si el asesino se cruza con el detective
+			Si asesino_temp[0] = posDetective[0] y asesino_temp[1] = posDetective[1] Entonces
+				movimientosRestantes = -1 // Fase 1 fallida
+			FinSi
+		FinMientras
+		
+		// Si el asesino llegó a la casa
+		Si asesino_temp[0] = posCasa[0] y asesino_temp[1] = posCasa[1] Entonces
+			evaluacion = Verdadero
+		FinSi
+	FinSi
+	
+	// Si la primera fase falló, intentar la segunda
+	Si evaluacion = Falso Entonces
+		movimientosRestantes = 3
+		asesino_temp[0] = posAsesino[0] // Reiniciar la posición temporal del asesino
+		asesino_temp[1] = posAsesino[1]
+		
+		// Fase 2: Igualar la fila primero y luego la columna
+		Mientras movimientosRestantes > 0 y asesino_temp[0] <> posCasa[0] Hacer
+			Si asesino_temp[0] < posCasa[0] Entonces
+				asesino_temp[0] = asesino_temp[0] + 1 // Mover hacia abajo
+			Sino Si asesino_temp[0] > posCasa[0] Entonces
+					asesino_temp[0] = asesino_temp[0] - 1 // Mover hacia arriba
+				FinSi
+			FinSi
+			
+			// Verificar si el asesino se cruza con el detective
+			Si asesino_temp[0] = posDetective[0] y asesino_temp[1] = posDetective[1] Entonces
+				movimientosRestantes = -1 // Fase 2 fallida
+			FinSi
+			
+			movimientosRestantes = movimientosRestantes - 1
+		FinMientras
+		
+		// Verificar si aún tiene movimientos y puede continuar hacia la columna
+		Si movimientosRestantes > 0 Entonces
+			Mientras movimientosRestantes > 0 y asesino_temp[1] <> posCasa[1] Hacer
+				Si asesino_temp[1] < posCasa[1] Entonces
+					asesino_temp[1] = asesino_temp[1] + 1 // Mover a la derecha
+				Sino Si asesino_temp[1] > posCasa[1] Entonces
+						asesino_temp[1] = asesino_temp[1] - 1 // Mover a la izquierda
+					FinSi
+				finsi	
+				movimientosRestantes = movimientosRestantes - 1
+				
+				// Verificar si el asesino se cruza con el detective
+				Si asesino_temp[0] = posDetective[0] y asesino_temp[1] = posDetective[1] Entonces
+					movimientosRestantes = -1 // Fase 2 fallida
+				FinSi
+			FinMientras
+			
+			// Si el asesino llegó a la casa
+			Si asesino_temp[0] = posCasa[0] y asesino_temp[1] = posCasa[1] Entonces
+				evaluacion = Verdadero
+			FinSi
+		FinSi
+	FinSi
+	
+	// Devolver el resultado final de evaluacion
 FinFuncion
 
 
@@ -329,7 +496,7 @@ SubAlgoritmo InicializarTablero(tablero)
 FinSubAlgoritmo
 
 
-SubAlgoritmo MostrarTablero(tablero)
+SubAlgoritmo MostrarTablero(tablero Por Referencia)
     Definir linea Como Entero
 	Para i = 0 Hasta 4-1 Con Paso 1
 		Para linea = 1 Hasta 15 Con Paso 1
@@ -358,7 +525,7 @@ SubAlgoritmo MostrarTablero(tablero)
 FinSubAlgoritmo
 
 ///############################################################################
-///################### FUNCIONES PARA ESCRIBIR LETRAS #########################
+///###################### FUNCIONES PARA CASILLAS #############################
 ///############################################################################
 
 SubAlgoritmo MostrarCasa(linea)
