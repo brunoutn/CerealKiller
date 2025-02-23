@@ -74,7 +74,7 @@ SubAlgoritmo Jugar
                 Escribir "Saliendo del juego..."
             De Otro Modo:
 				Limpiar Pantalla
-                Escribir "OpciÛn inv·lida, intente de nuevo."
+                Escribir "Opci√≥n inv√°lida, intente de nuevo."
         FinSegun
 		
 		Limpiar Pantalla
@@ -344,7 +344,7 @@ FinSubAlgoritmo
 ///############################# FUNCION DE POSICION ##########################
 ///############################################################################
 
-// FunciÛn para darle posiciÛn inicial al asesino
+// Funci√≥n para darle posici√≥n inicial al asesino
 Funcion inicio_asesino <- PosicionInicialAsesino
 	Definir fila, columna Como Entero
 	inicio_asesino = azar(8) + 1
@@ -505,7 +505,7 @@ FinSubAlgoritmo
 ///############### FUNCION PARA EVALUAR DETECTIVE EN CAMINO ###################
 ///############################################################################
 
-//Funcion para evaluar que el detective no estÈ en medio del camino
+//Funcion para evaluar que el detective no est√© en medio del camino
 Funcion evaluacion <- EvaluarDetectiveEnCamino(posAsesino, posDetective, posCasa, movimientosRestantes)
     Definir evaluacion Como Logico
     evaluacion = Falso
@@ -534,7 +534,7 @@ Funcion evaluacion <- EvaluarDetectiveEnCamino(posAsesino, posDetective, posCasa
 		//Escribir "Estoy aca, mov ", movimientosRestantes, " posASesino ", asesino_temp[1], " posCasa", posCasa[1]
 	FinMientras
 	
-	// Verificar si a˙n tiene movimientos y puede continuar hacia la fila
+	// Verificar si a√∫n tiene movimientos y puede continuar hacia la fila
 	Si movimientosRestantes > 0 Entonces
 		Mientras movimientosRestantes > 0 y asesino_temp[0] <> posCasa[0] Hacer
 			Si asesino_temp[0] < posCasa[0] Entonces
@@ -552,7 +552,7 @@ Funcion evaluacion <- EvaluarDetectiveEnCamino(posAsesino, posDetective, posCasa
 			FinSi
 		FinMientras
 		
-		// Si el asesino llegÛ a la casa
+		// Si el asesino lleg√≥ a la casa
 		Si asesino_temp[0] = posCasa[0] y asesino_temp[1] = posCasa[1] Entonces
 			evaluacion = Verdadero
 		FinSi
@@ -560,10 +560,10 @@ Funcion evaluacion <- EvaluarDetectiveEnCamino(posAsesino, posDetective, posCasa
 		//Escribir "Estoy aca, mov ", movimientosRestantes, " posASesino ", asesino_temp[1], " posCasa", posCasa[1]
 	FinSi
 	
-	// Si la primera fase fallÛ, intentar la segunda
+	// Si la primera fase fall√≥, intentar la segunda
 	Si evaluacion = Falso Entonces
 		movimientosRestantes = 3
-		asesino_temp[0] = posAsesino[0] // Reiniciar la posiciÛn temporal del asesino
+		asesino_temp[0] = posAsesino[0] // Reiniciar la posici√≥n temporal del asesino
 		asesino_temp[1] = posAsesino[1]
 		
 		// Fase 2: Igualar la fila primero y luego la columna
@@ -583,7 +583,7 @@ Funcion evaluacion <- EvaluarDetectiveEnCamino(posAsesino, posDetective, posCasa
 			movimientosRestantes = movimientosRestantes - 1
 		FinMientras
 		
-		// Verificar si a˙n tiene movimientos y puede continuar hacia la columna
+		// Verificar si a√∫n tiene movimientos y puede continuar hacia la columna
 		Si movimientosRestantes > 0 Entonces
 			Mientras movimientosRestantes > 0 y asesino_temp[1] <> posCasa[1] Hacer
 				Si asesino_temp[1] < posCasa[1] Entonces
@@ -600,7 +600,7 @@ Funcion evaluacion <- EvaluarDetectiveEnCamino(posAsesino, posDetective, posCasa
 				FinSi
 			FinMientras
 			
-			// Si el asesino llegÛ a la casa
+			// Si el asesino lleg√≥ a la casa
 			Si asesino_temp[0] = posCasa[0] y asesino_temp[1] = posCasa[1] Entonces
 				evaluacion = Verdadero
 			FinSi
@@ -684,7 +684,7 @@ SubProceso v<-validarn
 	FinSi
 FinSubProceso
 
-/// FunciÛn para dar un numero de casilla segun fila y columna
+/// Funci√≥n para dar un numero de casilla segun fila y columna
 Funcion posicion <- FCtoPOS ( fila, columna )
 	posicion = fila * 5 + columna + 1
 Fin Funcion
@@ -708,7 +708,7 @@ SubAlgoritmo validarCasillaAdyacente(tablero, casillaBuscar, posReferencia, posE
 				fila <- posReferencia[0] + i
 				columna <- posReferencia[1] + j
 				
-				// Validar que estÈ dentro del rango del tablero
+				// Validar que est√© dentro del rango del tablero
 				Si (fila >= 0 Y fila < 4) Y (columna >= 0 Y columna < 5) Entonces
 					Si tablero[fila, columna] = casillaBuscar Entonces
 						posEncontrada[0] <- fila
@@ -875,20 +875,20 @@ SubAlgoritmo MostrarReglas
     Escribir "*                                                                                                                                                                                                                                                                                                                                                                *"
     Escribir "*                                                                                                                                                                1. OBJETIVO:                                                                                                                                                                                    *"
     Escribir "*                                                                                                                                              - El Detective debe atrapar al Asesino antes de 6 asesinatos.                                                                                                                                                     *"
-    Escribir "*                                                                                                                                              - El Asesino debe eliminar 6 vÌctimas sin ser capturado.                                                                                                                                                          *"
+    Escribir "*                                                                                                                                              - El Asesino debe eliminar 6 v√≠ctimas sin ser capturado.                                                                                                                                                          *"
     Escribir "*                                                                                                                                                                                                                                                                                                                                                                *"
     Escribir "*                                                                                                                                                                2. TABLERO: MAPA 4X5                                                                                                                                                                            *"
     Escribir "*                                                                                                                                              - Casas: 1, 5, 8, 10, 11, 15, 17, 18                                                                                                                                                                              *"
     Escribir "*                                                                                                                                              - Parques: 2, 4, 13                                                                                                                                                                                               *"
-    Escribir "*                                                                                                                                              - CafÈs: 7, 14                                                                                                                                                                                                    *"
+    Escribir "*                                                                                                                                              - Caf√©s: 7, 14                                                                                                                                                                                                    *"
     Escribir "*                                                                                                                                                                                                                                                                                                                                                                *"
     Escribir "*                                                                                                                                                                3. TURNOS Y MOVIMIENTOS                                                                                                                                                                         *"
     Escribir "*                                                                                                                                              - Asesino: Se mueve 3 casillas (horizontal/vertical).                                                                                                                                                             *"
     Escribir "*                                                                                                                                                * Puede asesinar en casas y dejar un cereal.                                                                                                                                                                    *"
     Escribir "*                                                                                                                                                * Si hay un parque cerca, deja un testigo.                                                                                                                                                                      *"
     Escribir "*                                                                                                                                              - Detective: Se mueve hasta 3 casillas por turno.                                                                                                                                                                 *"
-    Escribir "*                                                                                                                                                * Elige un cafÈ para iniciar.                                                                                                                                                                                   *"
-    Escribir "*                                                                                                                                                * Interroga testigos autom·ticamente si pasa cerca.                                                                                                                                                             *"
+    Escribir "*                                                                                                                                                * Elige un caf√© para iniciar.                                                                                                                                                                                   *"
+    Escribir "*                                                                                                                                                * Interroga testigos autom√°ticamente si pasa cerca.                                                                                                                                                             *"
     Escribir "*                                                                                                                                                                                                                                                                                                                                                                *"
     Escribir "*                                                                                                                                                                4. ACCIONES DEL DETECTIVE                                                                                                                                                                       *"
     Escribir "*                                                                                                                                              - Moverse (arriba, abajo, izquierda, derecha).                                                                                                                                                                    *"
@@ -896,12 +896,12 @@ SubAlgoritmo MostrarReglas
     Escribir "*                                                                                                                                              - Terminar turno.                                                                                                                                                                                                 *"
     Escribir "*                                                                                                                                                                                                                                                                                                                                                                *"
     Escribir "*                                                                                                                                                                5. CONDICIONES DE VICTORIA                                                                                                                                                                      *"
-    Escribir "*                                                                                                                                              - Gana el Asesino si logra 6 vÌctimas o el Detective se queda sin intentos.                                                                                                                                       *"
+    Escribir "*                                                                                                                                              - Gana el Asesino si logra 6 v√≠ctimas o el Detective se queda sin intentos.                                                                                                                                       *"
     Escribir "*                                                                                                                                              - Gana el Detective si arresta al Asesino antes de su objetivo.                                                                                                                                                   *"
     Escribir "*                                                                                                                                                                                                                                                                                                                                                                *"
     Escribir "******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************"
     Escribir "*                                                                                                                                                                                                                                                                                                                                                                *"
-	Escribir "*                                                                                                                                                         Presione una tecla para volver al men˙...                                                                                                                                                              *"
+	Escribir "*                                                                                                                                                         Presione una tecla para volver al men√∫...                                                                                                                                                              *"
 	Escribir "*                                                                                                                                                                                                                                                                                                                                                                *"
     Escribir "******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************"
     
