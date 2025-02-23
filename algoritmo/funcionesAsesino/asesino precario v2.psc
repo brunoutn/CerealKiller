@@ -213,3 +213,4 @@ Funcion evaluacion <- EvaluarDetectiveEnCamino(posAsesino, posDetective, posCasa
 	
 	// Devolver el resultado final de evaluacion
 FinFuncion
+

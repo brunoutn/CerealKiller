@@ -1,3 +1,4 @@
+
 Proceso sin_titulo
 
 	Escribir '* Ingrese primer número'
@@ -56,5 +57,5 @@ SubProceso v<-validarn
 	Hasta Que validarnum=Verdadero 
 
 	v <- ConvertirANumero(num)
-
+	
 FinSubProceso

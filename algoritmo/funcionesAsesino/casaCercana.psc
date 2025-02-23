@@ -105,4 +105,3 @@ SubAlgoritmo POStoFC(posicion, fila Por Referencia, columna Por Referencia)
 	fila = (TRUNC((posicion - 1) / 5))+1
 	columna = ((posicion - 1) % 5)+1
 FinSubAlgoritmo
-
