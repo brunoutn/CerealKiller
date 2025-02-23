@@ -92,29 +92,6 @@ SubAlgoritmo Detective(tablero Por Referencia, casillaAnterior Por Referencia, p
 	MoverDetective(tablero, casillaAnterior, posAsesino, posDetective, turnos, intentosArresto, finDelJuego, diaActual, asesinatos)
 FinSubAlgoritmo
 
-SubAlgoritmo ubicarJugadorEnTablero(tablero, casillaAnterior Por Referencia, posDetective)
-	GuardarCasillaAnterior(casillaAnterior, tablero, posDetective)
-    // Colocar al jugador "D" en la nueva posición
-    tablero[posDetective[0], posDetective[1]] = "D"
-FinSubAlgoritmo
-
-SubAlgoritmo GuardarCasillaAnterior(casillaAnterior Por Referencia, tablero, posDetective)
-	// Restaurar la casilla anterior con el valor original
-	Definir i,j como entero
-	
-    Para i = 0 Hasta 4-1 Con Paso 1
-        Para j = 0 Hasta 5-1 Con Paso 1
-            Si tablero[i, j] = "D" Entonces
-                tablero[i, j] = casillaAnterior  // Restauramos el valor que había antes de colocar el jugador
-				i = 3
-				j = 4
-            FinSi
-        FinPara
-    FinPara
-    // Guardar lo que había en la nueva posición antes de colocar al jugador
-    casillaAnterior = tablero[posDetective[0], posDetective[1]]
-FinSubAlgoritmo
-
 ///############################################################################
 ///####################### ELECCION DE CAFE INICIAL ###########################
 ///############################################################################
@@ -637,6 +614,29 @@ FinFuncion
 ///############################################################################
 ///######################### FUNCIONES AUXILIARES #############################
 ///############################################################################
+
+SubAlgoritmo ubicarJugadorEnTablero(tablero, casillaAnterior Por Referencia, posDetective)
+	GuardarCasillaAnterior(casillaAnterior, tablero, posDetective)
+    // Colocar al jugador "D" en la nueva posición
+    tablero[posDetective[0], posDetective[1]] = "D"
+FinSubAlgoritmo
+
+SubAlgoritmo GuardarCasillaAnterior(casillaAnterior Por Referencia, tablero, posDetective)
+	// Restaurar la casilla anterior con el valor original
+	Definir i,j como entero
+	
+    Para i = 0 Hasta 4-1 Con Paso 1
+        Para j = 0 Hasta 5-1 Con Paso 1
+            Si tablero[i, j] = "D" Entonces
+                tablero[i, j] = casillaAnterior  // Restauramos el valor que había antes de colocar el jugador
+				i = 3
+				j = 4
+            FinSi
+        FinPara
+    FinPara
+    // Guardar lo que había en la nueva posición antes de colocar al jugador
+    casillaAnterior = tablero[posDetective[0], posDetective[1]]
+FinSubAlgoritmo
 
 ///Funcion para evaluar motivo de fin del juego
 SubAlgoritmo validarFin(arrestoExitoso Por Referencia, intentosArresto Por Referencia, finDelJuego Por Referencia, dia Por Referencia, asesinatos Por Referencia)
