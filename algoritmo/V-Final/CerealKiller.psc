@@ -20,7 +20,6 @@ SubAlgoritmo Jugar
 	//detective
 	Dimension posDetective[2]
 	
-	Definir fila, colum Como Entero
 	Definir casillaAnterior Como Caracter
 	Definir arrestoExitoso Como Logico
 	arrestoExitoso = Falso
@@ -394,39 +393,38 @@ SubAlgoritmo MovimientoAsesino(tablero Por Referencia, posAsesino Por Referencia
 	Dimension posEscondite[2]
 	movimientosRestantesAsesino = 3
 	
-	Si turnoSinMatar = Falso
-		Si aleatorio(1,3) = 1 Entonces
-			evitarAsesinato = Verdadero
-			turnoSinMatar = Verdadero
-		FinSi
-	FinSi
-	
-	Si evitarAsesinato = Falso
-		Para i = 0 Hasta 4-1 Con Paso 1
-			Para j = 0 Hasta 5-1 Con Paso 1
-				tableroAux[i,j] = tablero[i,j]
-			FinPara
-		FinPara
+	Si dia <> 1
 		
-		Repetir
-			casaMasCercana(posAsesino, posCasa, tableroAux, tablero)
+		Si turnoSinMatar = Falso
+			Si aleatorio(1,3) = 1 Entonces
+				evitarAsesinato = Verdadero
+				turnoSinMatar = Verdadero
+			FinSi
+		FinSi
+		
+		Si evitarAsesinato = Falso
+			Para i = 0 Hasta 4-1 Con Paso 1
+				Para j = 0 Hasta 5-1 Con Paso 1
+					tableroAux[i,j] = tablero[i,j]
+				FinPara
+			FinPara
 			
-			evaluacion <- EvaluarDetectiveEnCamino(posAsesino, posDetective, posCasa, movimientosRestantesAsesino)
-			si evaluacion = Verdadero Entonces
-				casaSeleccionada = Verdadero
-			SiNo
-				Si dia <> 1 Entonces
+			Repetir
+				casaMasCercana(posAsesino, posCasa, tableroAux, tablero)
+				
+				evaluacion <- EvaluarDetectiveEnCamino(posAsesino, posDetective, posCasa, movimientosRestantesAsesino)
+				si evaluacion = Verdadero Entonces
+					casaSeleccionada = Verdadero
+				SiNo
 					tableroAux[posCasa[0], posCasa[1]] = 'X'
 				FinSi
-			FinSi
+				
+			Mientras Que casaSeleccionada = Falso
 			
-		Mientras Que casaSeleccionada = Falso
-		
-		Si dia <> 1
 			tablero[posCasa[0], posCasa[1]] = 'O'
 			asesinatos = asesinatos + 1
 			//Si sale 1 el asesino cambia de posicion a una adyacente 
-			Si dia <> 1 y Aleatorio(1,2) = 1
+			Si Aleatorio(1,2) = 1
 				BuscarEscondite(tablero, posAsesino, posEscondite)
 				
 				posAsesino[0] = posEscondite[0]
@@ -436,9 +434,8 @@ SubAlgoritmo MovimientoAsesino(tablero Por Referencia, posAsesino Por Referencia
 				posAsesino[0] = posCasa[0]
 				posAsesino[1] = posCasa[1]
 			FinSi
+			
 		FinSi
-	
-		
 	FinSi
 	
 FinSubAlgoritmo
